@@ -114,6 +114,12 @@ function onCustomInput() {
 // ─── TIMER LOGIC ───
 function startTimer() {
     if (running) return;
+
+    // Unlock – hat funktioniert, behalten!
+    const unlock = new Audio('gong.mp3');
+    unlock.volume = 0;
+    unlock.play().catch(() => {});
+
     running = true;
     document.getElementById('startBtn').disabled = true;
     document.getElementById('pauseBtn').disabled = false;
@@ -124,6 +130,7 @@ function startTimer() {
         checkCards();
     }, 1000);
 }
+
 
 function pauseTimer() {
     if (!running) return;
@@ -159,22 +166,29 @@ function checkCards() {
     else if (times.yellow && elapsed >= times.yellow) activeCard = 'yellow';
     else if (times.green  && elapsed >= times.green)  activeCard = 'green';
 
+// ── DEBUG ──
+    document.getElementById('timeValue').textContent =
+        secToStr(elapsed) + ' g:' + times.green + ' e:' + elapsed;
+
     if (activeCard) {
-        const info = COLORS[activeCard];
         const bgMap = {
             'bg-green':  '#04ff04',
             'bg-yellow': '#ffe101',
             'bg-red':    '#ff0000',
             'bg-blue':   '#026b9c'
         };
+        const info = COLORS[activeCard];
         document.getElementById('bgOverlay').style.background = bgMap[info.bg];
     }
 
+    // ← Gong NUR bei Blau, EINMAL
     if (times.blue && elapsed >= times.blue && !gongPlayed) {
         gongPlayed = true;
-        playGong();
+        playGong(); // ← kommt das zu früh?
     }
 }
 
 // ─── INIT ───
 setMode('rede');
+console.log('times nach init:', JSON.stringify(times));
+alert('times: ' + JSON.stringify(times)); // ← Alert statt Console – sichtbar auf iPad!
