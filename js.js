@@ -65,11 +65,25 @@ menuToggle.addEventListener('touchend', e => { e.preventDefault(); showMenu(); }
 
 hideTimeout = setTimeout(hideMenu, 4000);
 
-// ─── AUDIO – Gong ───
+// ─── Gong Preload ───
+const gongAudio = new Audio('gong.mp3');
+gongAudio.volume = 0.8;
+
+function unlockAudio() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const buffer = ctx.createBuffer(1, 1, 22050);
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+    // Audio-Objekt vorladen ohne abzuspielen:
+    gongAudio.load();
+    ctx.close();
+}
+
 function playGong() {
-    const audio = new Audio('gong.mp3');
-    audio.volume = 0.8;
-    audio.play();
+    gongAudio.currentTime = 0;
+    gongAudio.play();
 }
 
 // ─── MODE ───
@@ -148,14 +162,13 @@ function resetTimer() {
 
     document.getElementById('timeValue').textContent = '00:00';
 
-    const bg = document.getElementById('bgOverlay');
-    bg.style.backgroundColor = bgMap[info.bg];
-    bg.style.background = bgMap[info.bg];
-    bg.style.opacity = "1";
-    bg.className = '';
+    // bgMap/info entfernen – einfach Farbe zurücksetzen:
+    document.getElementById('bgOverlay').style.backgroundColor = '#1a1a2e';
+
     document.getElementById('startBtn').disabled = false;
     document.getElementById('pauseBtn').disabled = true;
 }
+
 
 function updateDisplay() {
     document.getElementById('timeValue').textContent = secToStr(elapsed);
@@ -173,13 +186,15 @@ function checkCards() {
     else if (elapsed >= times.green)
         color = '#04ff04';
 
-    document.body.style.backgroundColor = color;
+    // bgOverlay statt document.body !
+    document.getElementById('bgOverlay').style.backgroundColor = color;
 
     if (elapsed >= times.blue && !gongPlayed) {
         gongPlayed = true;
         playGong();
     }
 }
+
 
 // ─── INIT ───
 setMode('rede');
