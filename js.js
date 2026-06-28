@@ -67,6 +67,7 @@ hideTimeout = setTimeout(hideMenu, 4000);
 
 // ─── AUDIO – Gong ───
 function playGong() {
+    alert("Gong!");
     const audio = new Audio('gong.mp3');
     audio.volume = 0.8;
     audio.play();
