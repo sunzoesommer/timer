@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toastmasters Timer</title>
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+
+<div id="bgOverlay"></div>
+<div id="menuToggle" title="Menü öffnen">☰</div>
+
+<div id="menu">
+    <h1>Toastmasters</h1>
+
+    <div class="mode-buttons">
+        <button class="mode-btn active" onclick="setMode('rede')">Rede</button>
+        <button class="mode-btn" onclick="setMode('stehgreif')">Stehgreifreden</button>
+        <button class="mode-btn" onclick="setMode('evaluation')">Evaluationsrede</button>
+        <button class="mode-btn" onclick="setMode('individuell')">Individuell</button>
+    </div>
+
+    <div class="settings-panel">
+        <h2 id="settingsTitle">⏱ Zeiten – Rede</h2>
+        <div class="time-inputs">
+            <div class="time-input-group">
+                <label><span class="card-dot dot-green"></span> Grün</label>
+                <input type="text" id="inp-green"  placeholder="05:00" oninput="onCustomInput()">
+            </div>
+            <div class="time-input-group">
+                <label><span class="card-dot dot-yellow"></span> Gelb</label>
+                <input type="text" id="inp-yellow" placeholder="06:00" oninput="onCustomInput()">
+            </div>
+            <div class="time-input-group">
+                <label><span class="card-dot dot-red"></span> Rot</label>
+                <input type="text" id="inp-red"    placeholder="07:00" oninput="onCustomInput()">
+            </div>
+            <div class="time-input-group">
+                <label><span class="card-dot dot-blue"></span> Blau+Gong</label>
+                <input type="text" id="inp-blue"   placeholder="07:30" oninput="onCustomInput()">
+            </div>
+            <p class="input-hint">Format: MM:SS oder Sekunden</p>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="ctrl-btn btn-start" id="startBtn" onclick="startTimer()">▶ Start</button>
+        <button class="ctrl-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" disabled>⏸</button>
+        <button class="ctrl-btn btn-reset" onclick="resetTimer()">↺</button>
+    </div>
+</div>
+
+<div id="timerCenter">
+    <div class="time-value" id="timeValue">00:00</div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+</div>
+
+<script src="js.js"></script>
+</body>
+</html>
