@@ -149,7 +149,9 @@ function resetTimer() {
     document.getElementById('timeValue').textContent = '00:00';
 
     const bg = document.getElementById('bgOverlay');
-    bg.style.background = '#1a1a2e';
+    bg.style.backgroundColor = bgMap[info.bg];
+    bg.style.background = bgMap[info.bg];
+    bg.style.opacity = "1";
     bg.className = '';
     document.getElementById('startBtn').disabled = false;
     document.getElementById('pauseBtn').disabled = true;
@@ -160,35 +162,25 @@ function updateDisplay() {
 }
 
 function checkCards() {
-    let activeCard = null;
-    if      (times.blue   && elapsed >= times.blue)   activeCard = 'blue';
-    else if (times.red    && elapsed >= times.red)    activeCard = 'red';
-    else if (times.yellow && elapsed >= times.yellow) activeCard = 'yellow';
-    else if (times.green  && elapsed >= times.green)  activeCard = 'green';
+    let color = '#1a1a2e';
 
-// ── DEBUG ──
-    document.getElementById('timeValue').textContent =
-        secToStr(elapsed) + ' g:' + times.green + ' e:' + elapsed;
+    if (elapsed >= times.blue)
+        color = '#026b9c';
+    else if (elapsed >= times.red)
+        color = '#ff0000';
+    else if (elapsed >= times.yellow)
+        color = '#ffe101';
+    else if (elapsed >= times.green)
+        color = '#04ff04';
 
-    if (activeCard) {
-        const bgMap = {
-            'bg-green':  '#04ff04',
-            'bg-yellow': '#ffe101',
-            'bg-red':    '#ff0000',
-            'bg-blue':   '#026b9c'
-        };
-        const info = COLORS[activeCard];
-        document.getElementById('bgOverlay').style.background = bgMap[info.bg];
-    }
+    document.body.style.backgroundColor = color;
 
-    // ← Gong NUR bei Blau, EINMAL
-    if (times.blue && elapsed >= times.blue && !gongPlayed) {
+    if (elapsed >= times.blue && !gongPlayed) {
         gongPlayed = true;
-        playGong(); // ← kommt das zu früh?
+        playGong();
     }
 }
 
 // ─── INIT ───
 setMode('rede');
-console.log('times nach init:', JSON.stringify(times));
-alert('times: ' + JSON.stringify(times)); // ← Alert statt Console – sichtbar auf iPad!
+alert("elapsed=" + elapsed);
