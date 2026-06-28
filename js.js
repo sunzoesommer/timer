@@ -67,7 +67,6 @@ hideTimeout = setTimeout(hideMenu, 4000);
 
 // ─── AUDIO – Gong ───
 function playGong() {
-    alert("Gong!");
     const audio = new Audio('gong.mp3');
     audio.volume = 0.8;
     audio.play();
@@ -114,7 +113,6 @@ function onCustomInput() {
 
 // ─── TIMER LOGIC ───
 function startTimer() {
-    alert("StartTimer");
     if (running) return;
 
     // Unlock – hat funktioniert, behalten!
@@ -164,25 +162,29 @@ function updateDisplay() {
 }
 
 function checkCards() {
-    let color = '#1a1a2e';
+    let activeCard = null;
+    if      (times.blue   && elapsed >= times.blue)   activeCard = 'blue';
+    else if (times.red    && elapsed >= times.red)    activeCard = 'red';
+    else if (times.yellow && elapsed >= times.yellow) activeCard = 'yellow';
+    else if (times.green  && elapsed >= times.green)  activeCard = 'green';
 
-    if (elapsed >= times.blue)
-        color = '#026b9c';
-    else if (elapsed >= times.red)
-        color = '#ff0000';
-    else if (elapsed >= times.yellow)
-        color = '#ffe101';
-    else if (elapsed >= times.green)
-        color = '#04ff04';
+    if (activeCard) {
+        const bgMap = {
+            'bg-green':  '#04ff04',
+            'bg-yellow': '#ffe101',
+            'bg-red':    '#ff0000',
+            'bg-blue':   '#026b9c'
+        };
+        const info = COLORS[activeCard];
+        document.getElementById('bgOverlay').style.background = bgMap[info.bg];
+    }
 
-    document.body.style.backgroundColor = color;
-
-    if (elapsed >= times.blue && !gongPlayed) {
+    // ← Gong NUR bei Blau, EINMAL
+    if (times.blue && elapsed >= times.blue && !gongPlayed) {
         gongPlayed = true;
-        playGong();
+        playGong(); // ← kommt das zu früh?
     }
 }
 
 // ─── INIT ───
 setMode('rede');
-alert("elapsed=" + elapsed);
