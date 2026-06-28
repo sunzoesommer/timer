@@ -114,6 +114,7 @@ function onCustomInput() {
 
 // ─── TIMER LOGIC ───
 function startTimer() {
+    alert("StartTimer");
     if (running) return;
 
     // Unlock – hat funktioniert, behalten!
