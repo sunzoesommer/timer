@@ -3,14 +3,15 @@ const PRESETS = {
     rede:        { green: 300, yellow: 360, red: 420, blue: 450 },
     stehgreif:   { green: 120, yellow: 150, red: 180, blue: 210 },
     evaluation:  { green: 120, yellow: 150, red: 180, blue: 210 },
-    individuell: { green: 0,   yellow: 0,   red: 0,   blue: 0   }
+    individuell: { green: 0,   yellow: 0,   red: 0,   blue: 0   },
+    test: { green: 1,   yellow: 2,   red: 3,   blue: 4   }
 };
 
 const COLORS = {
-    green:  { bg: 'bg-green',  bar: '#4caf50' },
-    yellow: { bg: 'bg-yellow', bar: '#ffeb3b' },
-    red:    { bg: 'bg-red',    bar: '#f44336' },
-    blue:   { bg: 'bg-blue',   bar: '#2196f3' }
+    green:  { bg: 'bg-green',  bar: '#e1e0da' },
+    yellow: { bg: 'bg-yellow', bar: '#e1e0da' },
+    red:    { bg: 'bg-red',    bar: '#e1e0da' },
+    blue:   { bg: 'bg-blue',   bar: '#e1e0da' }
 };
 
 let currentMode = 'rede';
@@ -76,7 +77,7 @@ function setMode(mode) {
     currentMode = mode;
     document.querySelectorAll('.mode-btn').forEach((b, i) => {
         b.classList.toggle('active',
-            ['rede', 'stehgreif', 'evaluation', 'individuell'][i] === mode);
+            ['rede', 'stehgreif', 'evaluation', 'individuell', 'test'][i] === mode);
     });
 
     times = { ...PRESETS[mode] };
@@ -94,7 +95,8 @@ function setMode(mode) {
             rede:        'Rede',
             stehgreif:   'Stehgreifreden',
             evaluation:  'Evaluationsrede',
-            individuell: 'Individuell'
+            individuell: 'Individuell',
+            test:        'Test'
         }[mode];
 
     resetTimer();
@@ -142,18 +144,12 @@ function resetTimer() {
     const bg = document.getElementById('bgOverlay');
     bg.style.background = '#1a1a2e';
     bg.className = '';
-
-    document.getElementById('progressBar').style.width      = '0%';
-    document.getElementById('progressBar').style.background = '#4caf50';
     document.getElementById('startBtn').disabled = false;
     document.getElementById('pauseBtn').disabled = true;
 }
 
 function updateDisplay() {
     document.getElementById('timeValue').textContent = secToStr(elapsed);
-    const max = times.blue || 1;
-    const pct = Math.min((elapsed / max) * 100, 100);
-    document.getElementById('progressBar').style.width = pct + '%';
 }
 
 function checkCards() {
@@ -166,13 +162,12 @@ function checkCards() {
     if (activeCard) {
         const info = COLORS[activeCard];
         const bgMap = {
-            'bg-green':  '#1a7a1a',
-            'bg-yellow': '#8a7a00',
-            'bg-red':    '#8a1a1a',
-            'bg-blue':   '#0a2a8a'
+            'bg-green':  '#04ff04',
+            'bg-yellow': '#ffe101',
+            'bg-red':    '#ff0000',
+            'bg-blue':   '#026b9c'
         };
         document.getElementById('bgOverlay').style.background = bgMap[info.bg];
-        document.getElementById('progressBar').style.background = info.bar;
     }
 
     if (times.blue && elapsed >= times.blue && !gongPlayed) {

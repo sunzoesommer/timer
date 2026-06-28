@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Toastmasters Timer</title>
     <link rel="stylesheet" href="css.css">
 </head>
@@ -19,6 +21,7 @@
         <button class="mode-btn" onclick="setMode('stehgreif')">Stehgreifreden</button>
         <button class="mode-btn" onclick="setMode('evaluation')">Evaluationsrede</button>
         <button class="mode-btn" onclick="setMode('individuell')">Individuell</button>
+        <button class="mode-btn" onclick="setMode('test')">Test</button>
     </div>
 
     <div class="settings-panel">
@@ -53,9 +56,6 @@
 
 <div id="timerCenter">
     <div class="time-value" id="timeValue">00:00</div>
-    <div class="progress-bar-container">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
 </div>
 
 <script src="js.js"></script>
