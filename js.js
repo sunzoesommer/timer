@@ -66,63 +66,10 @@ hideTimeout = setTimeout(hideMenu, 4000);
 
 // ─── AUDIO – Gong ───
 function playGong() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-    // ─── Hauptton (tiefe Klangschale) ───
-    const osc1  = ctx.createOscillator();
-    const gain1 = ctx.createGain();
-    osc1.connect(gain1);
-    gain1.connect(ctx.destination);
-    osc1.type = 'sine';
-    osc1.frequency.setValueAtTime(220, ctx.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(196, ctx.currentTime + 4);
-    gain1.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain1.gain.linearRampToValueAtTime(0.7, ctx.currentTime + 0.3);  // Anschwellen
-    gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 4);
-    osc1.start(ctx.currentTime);
-    osc1.stop(ctx.currentTime + 4);
-
-    // ─── Oberton 1 ───
-    const osc2  = ctx.createOscillator();
-    const gain2 = ctx.createGain();
-    osc2.connect(gain2);
-    gain2.connect(ctx.destination);
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(440, ctx.currentTime);
-    osc2.frequency.exponentialRampToValueAtTime(392, ctx.currentTime + 3);
-    gain2.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain2.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.3);  // Anschwellen
-    gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 4);
-    osc2.start(ctx.currentTime);
-    osc2.stop(ctx.currentTime + 4);
-
-    // ─── Oberton 2 ───
-    const osc3  = ctx.createOscillator();
-    const gain3 = ctx.createGain();
-    osc3.connect(gain3);
-    gain3.connect(ctx.destination);
-    osc3.type = 'sine';
-    osc3.frequency.setValueAtTime(880, ctx.currentTime);
-    osc3.frequency.exponentialRampToValueAtTime(784, ctx.currentTime + 1.5);
-    gain3.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain3.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.3);  // Anschwellen
-    gain3.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
-    osc3.start(ctx.currentTime);
-    osc3.stop(ctx.currentTime + 3);
-
-    // ─── Anschlag ───
-    const osc4  = ctx.createOscillator();
-    const gain4 = ctx.createGain();
-    osc4.connect(gain4);
-    gain4.connect(ctx.destination);
-    osc4.type = 'triangle';
-    osc4.frequency.setValueAtTime(300, ctx.currentTime);
-    gain4.gain.setValueAtTime(0.4, ctx.currentTime);
-    gain4.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-    osc4.start(ctx.currentTime);
-    osc4.stop(ctx.currentTime + 0.3);
+    const audio = new Audio('gong.mp3');
+    audio.volume = 0.8;
+    audio.play();
 }
-
 
 // ─── MODE ───
 function setMode(mode) {
