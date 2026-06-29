@@ -39,6 +39,59 @@ function strToSec(str) {
     return parseInt(str);
 }
 
+// Erkennen ob iOS und NICHT als PWA
+function isIOS() {
+    return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function isStandalone() {
+    return window.navigator.standalone === true;
+}
+
+if (isIOS() && !isStandalone()) {
+    // Hinweis anzeigen
+    showInstallHint();
+}
+
+
+function showInstallHint() {
+    const hint = document.createElement('div');
+    hint.innerHTML = `
+        <div style="
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            z-index: 9999;
+            text-align: center;
+            max-width: 280px;
+            border: 1px solid rgba(255,255,255,0.2);
+        ">
+            📲 Für Vollbild: Teilen → 
+            <strong>„Zum Home-Bildschirm"</strong>
+            <br><br>
+            <button onclick="this.parentElement.parentElement.remove()" 
+                style="background:rgba(255,255,255,0.2); 
+                       border:none; color:white; 
+                       padding:6px 14px; 
+                       border-radius:6px; 
+                       cursor:pointer;">
+                OK
+            </button>
+        </div>
+    `;
+    document.body.appendChild(hint);
+    
+    // Auto-ausblenden nach 8 Sekunden
+    setTimeout(() => hint.remove(), 8000);
+}
+
+
 // ─── MENÜ AUTO-HIDE ───
 let hideTimeout = null;
 const menu       = document.getElementById('menu');
@@ -66,22 +119,16 @@ menuToggle.addEventListener('touchend', e => { e.preventDefault(); showMenu(); }
 hideTimeout = setTimeout(hideMenu, 4000);
 
 // ─── Gong Preload ───
-const gongAudio = new Audio('gong.mp3');
-gongAudio.volume = 0.8;
+let gongAudio = null;
 
-function unlockAudio() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const buffer = ctx.createBuffer(1, 1, 22050);
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(ctx.destination);
-    source.start(0);
-    // Audio-Objekt vorladen ohne abzuspielen:
+function initGong() {
+    gongAudio = new Audio('gong.mp3');
+    gongAudio.volume = 0.8;
     gongAudio.load();
-    ctx.close();
 }
 
 function playGong() {
+    if (!gongAudio) return;
     gongAudio.currentTime = 0;
     gongAudio.play();
 }
@@ -129,10 +176,7 @@ function onCustomInput() {
 function startTimer() {
     if (running) return;
 
-    // Unlock – hat funktioniert, behalten!
-    const unlock = new Audio('gong.mp3');
-    unlock.volume = 0;
-    unlock.play().catch(() => {});
+    initGong(); // Erst hier erstellen – beim User-Gesture!
 
     running = true;
     document.getElementById('startBtn').disabled = true;
@@ -144,7 +188,6 @@ function startTimer() {
         checkCards();
     }, 1000);
 }
-
 
 function pauseTimer() {
     if (!running) return;
