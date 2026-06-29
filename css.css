@@ -5,12 +5,16 @@
 }
 
 html, body {
+    font-family: 'Fira Code', monospace;
+    font-weight: 500;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     min-height: 100%;
     min-height: 100dvh;
 }
 
 body {
-    font-family: "Share Tech Mono", monospace;
     color: #eee;
     overflow: hidden;
     display: flex;
